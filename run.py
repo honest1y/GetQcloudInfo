@@ -179,7 +179,7 @@ def main(File):
                 ECSNUM += 1
         else:
             worksheet.merge_range('A{}:F{}'.format(ECSNUM + 21, ECSNUM + 21), 'NOT Found 带宽包', data_format)
-            ECSNUM -= 1
+            
 
         # 数据库类
         worksheet.merge_range('A{}:F{}'.format(ECSNUM + 23, ECSNUM + 23), '数据库类', category_merge_format)
