@@ -3,7 +3,7 @@
 # @Author  : Wangxiao
 # @FileName: run.py
 
-import FormatData, xlsxwriter
+import FormatData, xlsxwriter, configparser
 
 def excel(workbook):
     CVMTitle = ['实例ID', '可用区', '名称','类型','系统', 'IP']
@@ -51,8 +51,8 @@ def excel(workbook):
         'fg_color': '#EED8AE'
     })
     return CVMTitle, CLBTitle, VPCTitle, EIPTitle, VPNTitle, DCTitle, BPSTitle, DSKTitle, MSQTitle, SQSTitle, RESTitle, MRDTitle, PGSTitle, YUJTitle, category_merge_format, merge_format, Title_format, data_format
-def main():
-    workbook = xlsxwriter.Workbook('D:/Qcloud.xlsx')
+def main(File):
+    workbook = xlsxwriter.Workbook(File)
     RegionList = ['ap-beijing', 'ap-shanghai', 'ap-guangzhou', 'ap-chengdu', 'ap-singapore']
     CVMTitle, CLBTitle, VPCTitle, EIPTitle, VPNTitle, DCTitle, BPSTitle, DSKTitle, MSQTitle, SQSTitle, RESTitle, MRDTitle, PGSTitle, YUJTitle, category_merge_format, merge_format, Title_format, data_format = excel(workbook)
     for region in RegionList:
@@ -273,4 +273,7 @@ def main():
 
     workbook.close()
 if __name__ == '__main__':
-    main()
+    config = configparser.ConfigParser()
+    config.read('config.txt')
+    File= config['common']['file']
+    main(File)

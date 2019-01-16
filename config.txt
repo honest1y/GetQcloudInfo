@@ -1,9 +1,9 @@
 [common]
 # access_id
-secret_id = A
+secret_id = AK
 
 # access_key
-secret_key = d5MRL4Vo
+secret_key = d5MRL4Voxy
 
 # Save FIle
 file = D:/Qcloud1.xlsx
