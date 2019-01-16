@@ -1,0 +1,9 @@
+[common]
+# access_id
+secret_id = A
+
+# access_key
+secret_key = d5MRL4Vo
+
+# Save FIle
+file = D:/Qcloud1.xlsx
