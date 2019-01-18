@@ -20,6 +20,7 @@ def excel(workbook):
     MRDTitle = ['MariadbID', '地域', '状态', '磁盘', 'VIP地址', '端口']
     PGSTitle = ['PostGreSQLID', '地域', '类型', '磁盘', '状态', '版本']
     YUJTitle = ['服务器在线数', '专业服务器数', '木马文件数', '异地登录数', '暴力破解成功数', '漏洞数']
+    WEBTitle = ['站点名称', '站点URL', '验证状态', '监测状态', '扫描状态', '漏洞数']
 
     category_merge_format = workbook.add_format({
         'font_size': 20,
@@ -50,11 +51,11 @@ def excel(workbook):
         'valign': 'vcenter',
         'fg_color': '#EED8AE'
     })
-    return CVMTitle, CLBTitle, VPCTitle, EIPTitle, VPNTitle, DCTitle, BPSTitle, DSKTitle, MSQTitle, SQSTitle, RESTitle, MRDTitle, PGSTitle, YUJTitle, category_merge_format, merge_format, Title_format, data_format
+    return CVMTitle, CLBTitle, VPCTitle, EIPTitle, VPNTitle, DCTitle, BPSTitle, DSKTitle, MSQTitle, SQSTitle, RESTitle, MRDTitle, PGSTitle, YUJTitle, WEBTitle, category_merge_format, merge_format, Title_format, data_format
 def main(File):
     workbook = xlsxwriter.Workbook(File)
     RegionList = ['ap-beijing', 'ap-shanghai', 'ap-guangzhou', 'ap-chengdu', 'ap-singapore']
-    CVMTitle, CLBTitle, VPCTitle, EIPTitle, VPNTitle, DCTitle, BPSTitle, DSKTitle, MSQTitle, SQSTitle, RESTitle, MRDTitle, PGSTitle, YUJTitle, category_merge_format, merge_format, Title_format, data_format = excel(workbook)
+    CVMTitle, CLBTitle, VPCTitle, EIPTitle, VPNTitle, DCTitle, BPSTitle, DSKTitle, MSQTitle, SQSTitle, RESTitle, MRDTitle, PGSTitle, YUJTitle, WEBTitle, category_merge_format, merge_format, Title_format, data_format = excel(workbook)
     for region in RegionList:
         print('正在导出地区： {}'.format(region))
         worksheet = workbook.add_worksheet(region)
@@ -178,8 +179,7 @@ def main(File):
                 worksheet.write_row('A' + str(ECSNUM + 22), cb, data_format)
                 ECSNUM += 1
         else:
-            worksheet.merge_range('A{}:F{}'.format(ECSNUM + 21, ECSNUM + 21), 'NOT Found 云硬盘', data_format)
-            
+            worksheet.merge_range('A{}:F{}'.format(ECSNUM + 21, ECSNUM + 21), 'NOT Found 带宽包', data_format)
 
         # 数据库类
         worksheet.merge_range('A{}:F{}'.format(ECSNUM + 23, ECSNUM + 23), '数据库类', category_merge_format)
@@ -270,6 +270,20 @@ def main(File):
         else:
             worksheet.merge_range('A{}:F{}'.format(ECSNUM + 41, ECSNUM + 41), 'NOT Found 云镜', data_format)
             ECSNUM -= 1
+
+        # 写入 WEB漏洞
+        worksheet.merge_range('A{}:F{}'.format(ECSNUM + 43, ECSNUM + 43), 'WEB漏洞配置信息', merge_format)
+        worksheet.set_column('A:F', 30)
+        worksheet.set_row(0, 25)
+        websites = FormatData.format_website(region)
+        if websites != None:
+            worksheet.write_row('A{}'.format(ECSNUM + 44), WEBTitle, Title_format)
+            for website in websites:
+                worksheet.write_row('A' + str(ECSNUM + 45), website, data_format)
+                ECSNUM += 1
+            ECSNUM -= 1
+        else:
+            worksheet.merge_range('A{}:F{}'.format(ECSNUM + 44, ECSNUM + 44), 'NOT Found WEB漏洞配置', data_format)
 
     workbook.close()
 if __name__ == '__main__':

@@ -306,3 +306,41 @@ def format_yunjing(Region_Id):
         response['VulNum'],
     )
     return result
+
+def format_website(Region_Id):
+    response  = Security.get_websites(Region_Id)
+    result = []
+    if response == None:
+        pass
+    else:
+        for line in response['Sites']:
+            if line.get('VerifyStatus') == 0:
+                VerifyStatus = '未验证'
+            elif line.get('VerifyStatus') == 1:
+                VerifyStatus = '已验证'
+            elif line.get('VerifyStatus') == 2:
+                VerifyStatus = '验证失败，待重新验证'
+            if line.get('MonitorStatus') == 0:
+                MonitorStatus = '未监测'
+            elif line.get('MonitorStatus') == 1:
+                MonitorStatus = '监测中'
+            elif line.get('MonitorStatus') == 2:
+                MonitorStatus = '暂停监测'
+            if line.get('ScanStatus') == 0:
+                ScanStatus = '待扫描'
+            elif line.get('ScanStatus') == 1:
+                ScanStatus = '扫描中'
+            elif line.get('ScanStatus') == 2:
+                ScanStatus = '已扫描'
+            elif line.get('ScanStatus') == 3:
+                ScanStatus = '扫描完成，待同步结果'
+            data = (
+                line.get('Name'),
+                line.get('Url'),
+                VerifyStatus,
+                MonitorStatus,
+                ScanStatus,
+                line.get('LastScanVulsNum'),
+            )
+            result.append(data)
+        return result
