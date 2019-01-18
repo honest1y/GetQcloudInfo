@@ -14,6 +14,7 @@
 - CDB For Maroadb
 - CDB For PostgreSQL
 - YunJing
+- CWS
 
 ### Known Problems
 - Not set Offset and Limit,That means if the number of CVMs and CDBs exceeds 100, they cannot be exported properly.
